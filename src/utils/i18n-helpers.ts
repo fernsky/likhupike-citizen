@@ -14,7 +14,8 @@ export function useDomainTranslations(domain: string) {
     console.error(`Error loading translations for domain ${domain}:`, error);
 
     // Return a fallback function that returns the key when translation fails
-    return (key: string, vars?: Record<string, any>) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    return (key: string, vars?: Record<string, unknown>) => {
       console.warn(`Translation missing: ${domain}.${key}`);
       return key;
     };
@@ -33,7 +34,8 @@ export function useCommonTranslations() {
     console.error("Error loading common translations:", error);
 
     // Return a fallback function that returns the key when translation fails
-    return (key: string, vars?: Record<string, any>) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    return (key: string, vars?: Record<string, unknown>) => {
       console.warn(`Common translation missing: ${key}`);
       return key;
     };

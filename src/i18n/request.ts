@@ -1,5 +1,4 @@
 import { getRequestConfig } from "next-intl/server";
-import { notFound } from "next/navigation";
 import { promises as fs } from "fs";
 import path from "path";
 import { locales, domains, defaultLocale } from "./config";
@@ -47,16 +46,18 @@ export default getRequestConfig(async ({ locale }) => {
   try {
     // Guard against undefined locale - use defaultLocale as fallback
     const safeLocale = locale || defaultLocale;
-    
+
     // Check if the locale is supported
-    if (!locales.includes(safeLocale as any)) {
-      console.warn(`Unsupported locale: ${safeLocale}, falling back to ${defaultLocale}`);
+    if (!locales.includes(safeLocale as "ne" | "en")) {
+      console.warn(
+        `Unsupported locale: ${safeLocale}, falling back to ${defaultLocale}`
+      );
       // Use default locale if the requested one isn't supported
       const messages = await loadDomainMessages(defaultLocale);
       return {
         locale: defaultLocale,
         messages,
-        timeZone: 'Asia/Kathmandu',
+        timeZone: "Asia/Kathmandu",
       };
     }
 
@@ -67,7 +68,7 @@ export default getRequestConfig(async ({ locale }) => {
     return {
       locale: safeLocale,
       messages,
-      timeZone: 'Asia/Kathmandu',
+      timeZone: "Asia/Kathmandu",
       // You could add more locale-specific settings here
     };
   } catch (error) {
@@ -78,7 +79,7 @@ export default getRequestConfig(async ({ locale }) => {
     return {
       locale: defaultLocale,
       messages,
-      timeZone: 'Asia/Kathmandu',
+      timeZone: "Asia/Kathmandu",
     };
   }
 });

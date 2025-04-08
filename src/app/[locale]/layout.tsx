@@ -23,7 +23,7 @@ export async function generateMetadata(props: {
   const locale = params.locale;
 
   // Validate locale
-  if (!locales.includes(locale as any)) {
+  if (!locales.includes(locale as "en" | "ne")) {
     return {
       title: "Unsupported Locale",
     };
@@ -140,7 +140,7 @@ export default async function RootLayout(props: {
   const locale = params.locale;
 
   // Check if locale is supported
-  if (!locales.includes(locale as any)) {
+  if (!locales.includes(locale as "en" | "ne")) {
     notFound();
   }
 
