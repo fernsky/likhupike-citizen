@@ -10,7 +10,13 @@ export interface CitizenProfile {
   photoUrl?: string;
   citizenshipFrontUrl?: string;
   citizenshipBackUrl?: string;
-  status: "ACTIVE" | "PENDING_REGISTRATION" | "INACTIVE" | "LOCKED";
+  status:
+    | "ACTIVE"
+    | "PENDING_REGISTRATION"
+    | "INACTIVE"
+    | "LOCKED"
+    | "UNDER_REVIEW"
+    | "ACTION_REQUIRED";
   createdAt: string;
   updatedAt: string;
 }
