@@ -59,28 +59,30 @@ export default function RegisterForm() {
     .object({
       name: z
         .string()
-        .min(2, { message: t("validation.nameMinLength") })
-        .max(100, { message: t("validation.nameMaxLength") })
-        .regex(/^[A-Za-z\s.'()-]+$/, { message: t("validation.nameFormat") }),
+        .min(2, { message: t("citizen.validation.nameMinLength") })
+        .max(100, { message: t("citizen.validation.nameMaxLength") })
+        .regex(/^[A-Za-z\s.'()-]+$/, {
+          message: t("citizen.validation.nameFormat"),
+        }),
 
       nameDevnagari: z
         .string()
-        .min(2, { message: t("validation.nameDevnagariMinLength") })
-        .max(100, { message: t("validation.nameDevnagariMaxLength") }),
+        .min(2, { message: t("citizen.validation.nameDevnagariMinLength") })
+        .max(100, { message: t("citizen.validation.nameDevnagariMaxLength") }),
 
       citizenshipNumber: z
         .string()
-        .min(1, { message: t("validation.required") })
+        .min(1, { message: t("citizen.validation.required") })
         .regex(/^[0-9\-\/]+$/, {
-          message: t("validation.citizenshipNumberFormat"),
+          message: t("citizen.validation.citizenshipNumberFormat"),
         }),
 
       citizenshipIssuedDate: z
         .date({
-          required_error: t("validation.required"),
+          required_error: t("citizen.validation.required"),
         })
         .refine((date) => date <= new Date(), {
-          message: t("validation.dateInPast"),
+          message: t("citizen.validation.dateInPast"),
         })
         .refine(
           (date) => {
@@ -89,34 +91,38 @@ export default function RegisterForm() {
             sixteenYearsAgo.setFullYear(sixteenYearsAgo.getFullYear() - 16);
             return date <= sixteenYearsAgo;
           },
-          { message: t("validation.citizenshipDateValid") }
+          { message: t("citizen.validation.citizenshipDateValid") }
         ),
 
       citizenshipIssuedOffice: z
         .string()
-        .min(2, { message: t("validation.required") })
-        .max(150, { message: t("validation.maxLength", { length: 150 }) }),
+        .min(2, { message: t("citizen.validation.required") })
+        .max(150, {
+          message: t("citizen.validation.maxLength", { length: 150 }),
+        }),
 
-      email: z.string().email({ message: t("validation.emailValid") }),
+      email: z.string().email({ message: t("citizen.validation.emailValid") }),
 
       phoneNumber: z.string().regex(/^(\+977)?[9][6-9]\d{8}$/, {
-        message: t("validation.phoneFormat"),
+        message: t("citizen.validation.phoneFormat"),
       }),
 
       password: z
         .string()
-        .min(8, { message: t("validation.passwordMinLength") })
+        .min(8, { message: t("citizen.validation.passwordMinLength") })
         .regex(
           /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
           {
-            message: t("validation.passwordRequirements"),
+            message: t("citizen.validation.passwordRequirements"),
           }
         ),
 
-      confirmPassword: z.string().min(1, { message: t("validation.required") }),
+      confirmPassword: z
+        .string()
+        .min(1, { message: t("citizen.validation.required") }),
     })
     .refine((data) => data.password === data.confirmPassword, {
-      message: t("validation.passwordMatch"),
+      message: t("citizen.validation.passwordMatch"),
       path: ["confirmPassword"],
     });
 
