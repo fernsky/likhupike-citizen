@@ -6,11 +6,15 @@ import AuthGuard from "@/components/auth/auth-guard";
 
 interface DashboardLayoutProps {
   children: ReactNode;
+  requiredRole?: string;
 }
 
-export default function DashboardLayout({ children }: DashboardLayoutProps) {
+export default function DashboardLayout({ 
+  children, 
+  requiredRole 
+}: DashboardLayoutProps) {
   return (
-    <AuthGuard>
+    <AuthGuard requiredRole={requiredRole}>
       <div className="min-h-screen flex flex-col">
         <DashboardHeader />
         <div className="flex flex-1">

@@ -1,5 +1,7 @@
 import { jwtDecode } from "jwt-decode";
 import { isClient } from "./utils";
+import { authConfig } from "@/config/middleware-config";
+import Cookies from "js-cookie";
 
 /**
  * Interface for JWT payload
@@ -18,10 +20,11 @@ export function isTokenValid(token: string): boolean {
   try {
     // Decode JWT without verifying signature (signature verification happens on server)
     const decoded = jwtDecode<JwtPayload>(token);
-    console.log(decoded);
-    // Check if token has expired
+
+    // Check if token has expired (with tolerance for refresh)
     const currentTime = Math.floor(Date.now() / 1000);
 
+    // Return true if current time is less than expiration time
     return decoded.exp > currentTime;
   } catch (error) {
     console.error("Error validating token:", error);
@@ -30,12 +33,64 @@ export function isTokenValid(token: string): boolean {
 }
 
 /**
- * Get auth token from localStorage or cookie
+ * Check if token will expire soon and should be refreshed
+ */
+export function shouldRefreshToken(token: string): boolean {
+  try {
+    const decoded = jwtDecode<JwtPayload>(token);
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    // Return true if token will expire within tolerance window
+    return decoded.exp - currentTime < authConfig.tokenExpireTolerance;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Get auth token from localStorage and sync with cookie for SSR
  */
 export function getAuthToken(): string | null {
   if (!isClient) return null;
 
-  return localStorage.getItem("auth_token");
+  const token = localStorage.getItem("auth_token");
+
+  // If token exists in localStorage but not in cookies, sync them
+  // This ensures middleware can access the token
+  if (token && !Cookies.get("auth_token")) {
+    Cookies.set("auth_token", token, {
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+  }
+
+  return token;
+}
+
+/**
+ * Set auth token in both localStorage and cookies
+ */
+export function setAuthToken(token: string, expiresIn: number): void {
+  if (!isClient) return;
+
+  localStorage.setItem("auth_token", token);
+
+  // Also set in cookies for SSR/middleware
+  Cookies.set("auth_token", token, {
+    expires: new Date(Date.now() + expiresIn * 1000),
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  });
+}
+
+/**
+ * Remove auth token from both localStorage and cookies
+ */
+export function removeAuthToken(): void {
+  if (!isClient) return;
+
+  localStorage.removeItem("auth_token");
+  Cookies.remove("auth_token");
 }
 
 /**

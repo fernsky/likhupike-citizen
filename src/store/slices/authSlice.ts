@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CitizenAuthResponse } from "@/domains/auth/types";
 import { isClient } from "@/lib/utils";
+import { setAuthToken, removeAuthToken } from "@/lib/auth-utils";
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -42,9 +43,9 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = null;
 
-      // Store in localStorage
+      // Store in localStorage and cookies using our utility
       if (isClient) {
-        localStorage.setItem("auth_token", action.payload.accessToken);
+        setAuthToken(action.payload.accessToken, action.payload.expiresIn);
         localStorage.setItem("refresh_token", action.payload.refreshToken);
         localStorage.setItem("user_id", action.payload.citizenId);
         localStorage.setItem(
@@ -62,9 +63,9 @@ const authSlice = createSlice({
       state.refreshToken = action.payload.refreshToken;
       state.expiresAt = Date.now() + action.payload.expiresIn * 1000;
 
-      // Update localStorage
+      // Update localStorage and cookies
       if (isClient) {
-        localStorage.setItem("auth_token", action.payload.accessToken);
+        setAuthToken(action.payload.accessToken, action.payload.expiresIn);
         localStorage.setItem("refresh_token", action.payload.refreshToken);
         localStorage.setItem(
           "token_expiry",
@@ -79,9 +80,9 @@ const authSlice = createSlice({
       state.citizenId = null;
       state.expiresAt = null;
 
-      // Clear localStorage
+      // Clear localStorage and cookies
       if (isClient) {
-        localStorage.removeItem("auth_token");
+        removeAuthToken();
         localStorage.removeItem("refresh_token");
         localStorage.removeItem("user_id");
         localStorage.removeItem("token_expiry");

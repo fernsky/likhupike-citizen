@@ -7,6 +7,7 @@ import {
   CitizenRequestPasswordResetRequest,
   CitizenResetPasswordRequest,
 } from "@/domains/auth/types";
+import { setAuthToken, removeAuthToken } from "@/lib/auth-utils";
 
 /**
  * RTK Query API for authentication endpoints.
@@ -38,9 +39,14 @@ export const authApi = createApi({
       transformResponse: (response: ApiResponse<CitizenAuthResponse>) => {
         // Store tokens in localStorage upon successful login
         if (response.success && response.data) {
-          localStorage.setItem("auth_token", response.data.accessToken);
+          // Use our updated auth utils to set tokens in both localStorage and cookies
+          setAuthToken(response.data.accessToken, response.data.expiresIn);
           localStorage.setItem("refresh_token", response.data.refreshToken);
           localStorage.setItem("user_id", response.data.citizenId);
+          localStorage.setItem(
+            "token_expiry",
+            String(Date.now() + response.data.expiresIn * 1000)
+          );
         }
         return response.data;
       },
@@ -59,9 +65,14 @@ export const authApi = createApi({
       transformResponse: (response: ApiResponse<CitizenAuthResponse>) => {
         // Update stored tokens
         if (response.success && response.data) {
-          localStorage.setItem("auth_token", response.data.accessToken);
+          // Use our updated auth utils to set tokens in both localStorage and cookies
+          setAuthToken(response.data.accessToken, response.data.expiresIn);
           localStorage.setItem("refresh_token", response.data.refreshToken);
           localStorage.setItem("user_id", response.data.citizenId);
+          localStorage.setItem(
+            "token_expiry",
+            String(Date.now() + response.data.expiresIn * 1000)
+          );
         }
         return response.data;
       },
@@ -77,9 +88,11 @@ export const authApi = createApi({
       async onQueryStarted(_, { queryFulfilled }) {
         try {
           await queryFulfilled;
-          localStorage.removeItem("auth_token");
+          // Use our updated auth utils to remove tokens from both localStorage and cookies
+          removeAuthToken();
           localStorage.removeItem("refresh_token");
           localStorage.removeItem("user_id");
+          localStorage.removeItem("token_expiry");
         } catch (error) {
           console.error("Logout failed:", error);
         }

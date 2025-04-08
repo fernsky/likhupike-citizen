@@ -2,6 +2,7 @@ import createMiddleware from "next-intl/middleware";
 import { locales } from "./i18n";
 import { NextRequest, NextResponse } from "next/server";
 import { isTokenValid } from "./lib/auth-utils";
+import { protectedPaths, authConfig } from "./config/middleware-config";
 
 // Create standard internationalization middleware
 const intlMiddleware = createMiddleware({
@@ -23,8 +24,16 @@ export default function middleware(request: NextRequest) {
   // Extract path from request
   const path = request.nextUrl.pathname;
 
-  // Check if the path is a protected dashboard route
-  if (path.includes("/dashboard")) {
+  // Check if the path is a protected route (more flexible than hardcoding "/dashboard")
+  const isProtectedRoute = protectedPaths.some(protectedPath => {
+    if (protectedPath.endsWith('/*')) {
+      const basePath = protectedPath.slice(0, -2);
+      return path.startsWith(basePath);
+    }
+    return path === protectedPath;
+  });
+
+  if (isProtectedRoute) {
     // Get auth token and check if it's valid
     const token = request.cookies.get("auth_token")?.value;
 
@@ -36,7 +45,7 @@ export default function middleware(request: NextRequest) {
       // Create redirect URL to login page with return URL
       const returnUrl = encodeURIComponent(path);
       const loginUrl = new URL(
-        `/${locale}/login?returnUrl=${returnUrl}`,
+        `/${locale}${authConfig.loginRedirectPath}?returnUrl=${returnUrl}`,
         request.url
       );
 
@@ -80,7 +89,11 @@ export const config = {
   matcher: [
     // Match all paths except those starting with /api/, /_next/, or containing a dot (.)
     "/((?!api|_next|_vercel|.*\\..*).*)",
-    // Include dashboard routes to ensure they're protected
-    "/:locale/dashboard/:path*",
+    // Include all protected routes
+    ...protectedPaths.map(path => 
+      path.endsWith('/*') 
+        ? `/:locale${path.slice(0, -2)}/:path*` 
+        : `/:locale${path}`
+    ),
   ],
 };
