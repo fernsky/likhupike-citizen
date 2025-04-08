@@ -22,7 +22,8 @@
     "required": "This field is required",
     "invalidEmail": "Please enter a valid email address",
     "passwordMismatch": "Passwords do not match",
-    "invalidPassword": "Password must contain at least 8 characters, including uppercase, lowercase, number and special character"
+    "invalidPassword": "Password must contain at least 8 characters, including uppercase, lowercase, number and special character",
+    "submitting": "Submitting..."
   },
   "homepage": {
     "services": {

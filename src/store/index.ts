@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
-
+import { registrationReducer } from "./slices/registrationSlice";
 import { authReducer } from './slices/authSlice';
 import { profileReducer } from './slices/profileSlice';
 import { uiReducer } from './slices/uiSlice';
@@ -13,6 +13,7 @@ export const store = configureStore({
     auth: authReducer,
     profile: profileReducer,
     ui: uiReducer,
+    registration: registrationReducer,
     [citizenApi.reducerPath]: citizenApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
   },
