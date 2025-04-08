@@ -1,7 +1,7 @@
 {
   "default": {
-    "title": "Likhupike Digital Profile - Citizen Portal",
-    "description": "Official Digital Profile Information System - Access government services and manage your digital identity through the Likhupike Citizen Portal"
+    "title": "Digital Profile System | Government of Nepal",
+    "description": "Official Digital Profile Information System for citizens of Nepal"
   },
   "home": {
     "title": "Home - Likhupike Digital Profile System",
@@ -9,18 +9,18 @@
     "keywords": "likhupike, digital profile, citizen portal, nepal government, digital identity, online services, e-governance"
   },
   "profile": {
-    "title": "My Profile - Likhupike Digital Profile System",
-    "description": "View and manage your citizen profile in the official Likhupike Digital Profile System. Update personal information, upload documents, and maintain your digital identity.",
+    "title": "My Profile | Digital Profile System",
+    "description": "View and manage your personal information and verification status",
     "keywords": "citizen profile, digital identity, likhupike profile, personal information, digital documents"
   },
   "register": {
-    "title": "Register - Likhupike Digital Profile System",
-    "description": "Register as a new citizen in the official Likhupike Digital Profile System. Create your digital identity for accessing government services online.",
+    "title": "Register | Digital Profile System",
+    "description": "Register yourself in the Digital Profile Information System to access government services securely",
     "keywords": "citizen registration, new account, digital identity, likhupike registration, government services"
   },
   "login": {
-    "title": "Login - Likhupike Digital Profile System",
-    "description": "Securely log in to access your citizen profile and government services in the official Likhupike Digital Profile System.",
+    "title": "Login | Digital Profile System",
+    "description": "Sign in to your Digital Profile account to access government services and manage your digital identity",
     "keywords": "citizen login, secure access, likhupike login, government portal, digital services"
   },
   "forgotPassword": {
@@ -29,8 +29,8 @@
     "keywords": "password recovery, forgot password, account access, reset password, likhupike account"
   },
   "dashboard": {
-    "title": "Dashboard - Likhupike Digital Profile System",
-    "description": "Access your personalized dashboard in the Likhupike Digital Profile System. View your profile status, notifications, and available services.",
+    "title": "Dashboard | Digital Profile System",
+    "description": "Manage your digital profile, upload documents, and track verification status",
     "keywords": "citizen dashboard, service status, likhupike services, digital profile dashboard"
   },
   "documents": {
