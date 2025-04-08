@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import Layout from "@/components/layout/main-layout";
@@ -8,16 +9,12 @@ import RegisterForm from "@/domains/citizen/components/register-form";
 import { Card, CardContent } from "@/components/ui/card";
 import { ExternalLink } from "lucide-react";
 
-export async function generateMetadata(
-  props: {
-    params: Promise<{ locale: string }>;
-  }
-): Promise<Metadata> {
+export async function generateMetadata(props: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
   const params = await props.params;
 
-  const {
-    locale
-  } = params;
+  const { locale } = params;
 
   const t = await getTranslations({ locale, namespace: "seo.register" });
 
@@ -46,6 +43,8 @@ export async function generateMetadata(
 }
 
 export default function RegisterPage() {
+  const t = useTranslations("auth.register");
+
   return (
     <Layout>
       <Container className="py-8 md:py-12">
@@ -65,57 +64,49 @@ export default function RegisterPage() {
                   />
                 </div>
 
-                <h2 className="text-2xl font-bold text-center">
-                  Citizen Registration
-                </h2>
-                <p className="text-muted-foreground">
-                  Register yourself in the Digital Profile Information System to
-                  access and manage your official government identity and
-                  documents securely online.
-                </p>
+                <h2 className="text-2xl font-bold text-center">{t("title")}</h2>
+                <p className="text-muted-foreground">{t("description")}</p>
 
                 <div className="border-t border-b border-slate-200 dark:border-slate-700 py-4 my-4">
                   <h3 className="font-semibold mb-2">
-                    Registration Requirements:
+                    {t("requirements.title")}
                   </h3>
                   <ul className="space-y-2 list-disc list-inside text-sm">
-                    <li>Citizenship certificate details</li>
-                    <li>Valid email address</li>
-                    <li>Mobile phone number</li>
-                    <li>Secure password</li>
+                    <li>{t("requirements.citizenship")}</li>
+                    <li>{t("requirements.email")}</li>
+                    <li>{t("requirements.phone")}</li>
+                    <li>{t("requirements.password")}</li>
                   </ul>
                 </div>
 
                 <div className="bg-amber-50 dark:bg-amber-950/50 p-4 rounded-md border border-amber-200 dark:border-amber-900 text-sm">
-                  <strong className="block mb-1">Important Notice:</strong>
-                  <p>
-                    All information provided must be accurate and match your
-                    citizenship certificate. False information may result in
-                    legal consequences.
-                  </p>
+                  <strong className="block mb-1">{t("notice.title")}</strong>
+                  <p>{t("notice.content")}</p>
                 </div>
 
                 <div className="text-sm text-muted-foreground">
-                  <p className="mb-2">By registering, you agree to our:</p>
+                  <p className="mb-2">{t("agreement.intro")}</p>
                   <div className="space-y-1">
                     <Link
                       href="/policies/terms"
                       className="flex items-center hover:underline"
                     >
-                      <ExternalLink className="h-3 w-3 mr-1" /> Terms of Service
+                      <ExternalLink className="h-3 w-3 mr-1" />{" "}
+                      {t("agreement.terms")}
                     </Link>
                     <Link
                       href="/policies/privacy"
                       className="flex items-center hover:underline"
                     >
-                      <ExternalLink className="h-3 w-3 mr-1" /> Privacy Policy
+                      <ExternalLink className="h-3 w-3 mr-1" />{" "}
+                      {t("agreement.privacy")}
                     </Link>
                     <Link
                       href="/policies/data-usage"
                       className="flex items-center hover:underline"
                     >
-                      <ExternalLink className="h-3 w-3 mr-1" /> Data Usage
-                      Policy
+                      <ExternalLink className="h-3 w-3 mr-1" />{" "}
+                      {t("agreement.dataUsage")}
                     </Link>
                   </div>
                 </div>
@@ -131,16 +122,16 @@ export default function RegisterPage() {
 
         <div className="mt-8 text-center text-sm text-muted-foreground">
           <p>
-            Need help? Contact our support at{" "}
+            {t("help.text")}{" "}
             <a
-              href="mailto:support@dpis.gov.np"
+              href={`mailto:${t("help.email")}`}
               className="font-medium hover:underline"
             >
-              support@dpis.gov.np
+              {t("help.email")}
             </a>{" "}
-            or call{" "}
+            {t("help.or")}{" "}
             <a href="tel:+9771450xxxx" className="font-medium hover:underline">
-              01-450xxxx
+              {t("help.phone")}
             </a>
           </p>
         </div>

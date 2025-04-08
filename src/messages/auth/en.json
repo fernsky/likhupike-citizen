@@ -69,5 +69,33 @@
     "title": "Change Password",
     "success": "Password changed successfully",
     "error": "Failed to change password"
+  },
+  "register": {
+    "title": "Citizen Registration",
+    "subtitle": "Register yourself in the Digital Profile Information System",
+    "description": "Access and manage your official government identity and documents securely online.",
+    "requirements": {
+      "title": "Registration Requirements:",
+      "citizenship": "Citizenship certificate details",
+      "email": "Valid email address",
+      "phone": "Mobile phone number",
+      "password": "Secure password"
+    },
+    "notice": {
+      "title": "Important Notice:",
+      "content": "All information provided must be accurate and match your citizenship certificate. False information may result in legal consequences."
+    },
+    "agreement": {
+      "intro": "By registering, you agree to our:",
+      "terms": "Terms of Service",
+      "privacy": "Privacy Policy",
+      "dataUsage": "Data Usage Policy"
+    },
+    "help": {
+      "text": "Need help? Contact our support at",
+      "email": "support@dpis.gov.np",
+      "or": "or call",
+      "phone": "01-450xxxx"
+    }
   }
 }
