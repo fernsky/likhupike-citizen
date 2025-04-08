@@ -1,6 +1,7 @@
 import createMiddleware from "next-intl/middleware";
 import { locales } from "./i18n";
 import { NextRequest, NextResponse } from "next/server";
+import { isTokenValid } from "./lib/auth-utils";
 
 // Create standard internationalization middleware
 const intlMiddleware = createMiddleware({
@@ -14,10 +15,35 @@ const intlMiddleware = createMiddleware({
   localePrefix: "always",
 });
 
-// Custom middleware that combines i18n functionality with security headers
+// Custom middleware that combines i18n functionality with authentication and security headers
 export default function middleware(request: NextRequest) {
   // Process internationalization first
   const response = intlMiddleware(request);
+
+  // Extract path from request
+  const path = request.nextUrl.pathname;
+
+  // Check if the path is a protected dashboard route
+  if (path.includes("/dashboard")) {
+    // Get auth token and check if it's valid
+    const token = request.cookies.get("auth_token")?.value;
+
+    // If no token or token is invalid, redirect to login
+    if (!token || !isTokenValid(token)) {
+      // Get locale from path
+      const locale = path.split("/")[1] || "en";
+
+      // Create redirect URL to login page with return URL
+      const returnUrl = encodeURIComponent(path);
+      const loginUrl = new URL(
+        `/${locale}/login?returnUrl=${returnUrl}`,
+        request.url
+      );
+
+      // Return redirect response
+      return NextResponse.redirect(loginUrl);
+    }
+  }
 
   if (response) {
     // Add security headers to the response
@@ -50,6 +76,11 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Match only internationalized pathnames (excluding API routes, static files, etc.)
-  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
+  // Match all routes except API routes, static files, etc.
+  matcher: [
+    // Match all paths except those starting with /api/, /_next/, or containing a dot (.)
+    "/((?!api|_next|_vercel|.*\\..*).*)",
+    // Include dashboard routes to ensure they're protected
+    "/:locale/dashboard/:path*",
+  ],
 };
