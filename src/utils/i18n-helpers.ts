@@ -7,9 +7,18 @@ import { useTranslations } from "next-intl";
  * @returns A translation function that prepends the domain to the key
  */
 export function useDomainTranslations(domain: string) {
-  const baseTranslate = useTranslations(domain);
+  try {
+    const baseTranslate = useTranslations(domain);
+    return baseTranslate;
+  } catch (error) {
+    console.error(`Error loading translations for domain ${domain}:`, error);
 
-  return baseTranslate;
+    // Return a fallback function that returns the key when translation fails
+    return (key: string, vars?: Record<string, any>) => {
+      console.warn(`Translation missing: ${domain}.${key}`);
+      return key;
+    };
+  }
 }
 
 /**
@@ -18,7 +27,17 @@ export function useDomainTranslations(domain: string) {
  * @returns A translation function for common translations
  */
 export function useCommonTranslations() {
-  return useTranslations("common");
+  try {
+    return useTranslations("common");
+  } catch (error) {
+    console.error("Error loading common translations:", error);
+
+    // Return a fallback function that returns the key when translation fails
+    return (key: string, vars?: Record<string, any>) => {
+      console.warn(`Common translation missing: ${key}`);
+      return key;
+    };
+  }
 }
 
 /**

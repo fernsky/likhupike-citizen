@@ -2,7 +2,7 @@ import { getRequestConfig } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { promises as fs } from "fs";
 import path from "path";
-import { domains, validateLocale } from "./config";
+import { locales, domains, defaultLocale } from "./config";
 
 /**
  * Loads message files for all domains for a specific locale
@@ -45,22 +45,40 @@ async function loadDomainMessages(locale: string) {
 
 export default getRequestConfig(async ({ locale }) => {
   try {
-    // Validate that the incoming locale is supported
-    validateLocale(locale as string);
+    // Guard against undefined locale - use defaultLocale as fallback
+    const safeLocale = locale || defaultLocale;
+    
+    // Check if the locale is supported
+    if (!locales.includes(safeLocale as any)) {
+      console.warn(`Unsupported locale: ${safeLocale}, falling back to ${defaultLocale}`);
+      // Use default locale if the requested one isn't supported
+      const messages = await loadDomainMessages(defaultLocale);
+      return {
+        locale: defaultLocale,
+        messages,
+        timeZone: 'Asia/Kathmandu',
+      };
+    }
 
     // Load and merge messages for the requested locale from all domains
-    const messages = await loadDomainMessages(locale as string);
+    const messages = await loadDomainMessages(safeLocale);
 
     // Return locale configuration
     return {
-      locale: locale as string,
+      locale: safeLocale,
       messages,
-      timeZone: locale === "en" ? "Asia/Kathmandu" : "Asia/Kathmandu",
+      timeZone: 'Asia/Kathmandu',
       // You could add more locale-specific settings here
-      // For example, different number formatting or date formats
     };
   } catch (error) {
     console.error(`Error setting up i18n for locale ${locale}:`, error);
-    notFound();
+    // Handle error gracefully instead of calling notFound()
+    // This prevents the error cascade
+    const messages = await loadDomainMessages(defaultLocale);
+    return {
+      locale: defaultLocale,
+      messages,
+      timeZone: 'Asia/Kathmandu',
+    };
   }
 });

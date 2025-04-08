@@ -15,11 +15,10 @@ export function generateStaticParams() {
 }
 
 // The key fix here is accessing params directly, not destructuring immediately
-export async function generateMetadata({
-  params,
-}: {
-  params: { locale: string };
+export async function generateMetadata(props: {
+  params: Promise<{ locale: string }>;
 }) {
+  const params = await props.params;
   // Explicitly get the locale from params and use it
   const locale = params.locale;
 
@@ -129,13 +128,14 @@ export async function generateMetadata({
   }
 }
 
-export default async function RootLayout({
-  children,
-  params,
-}: {
+export default async function RootLayout(props: {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
+  const params = await props.params;
+
+  const { children } = props;
+
   // Extract the locale parameter directly without destructuring
   const locale = params.locale;
 

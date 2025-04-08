@@ -35,9 +35,36 @@ export const dateFormats: Record<string, Intl.DateTimeFormatOptions> = {
   },
 };
 
-// Utility function to validate locale
-export function validateLocale(locale: string): asserts locale is Locale {
+/**
+ * Utility function to validate locale
+ * @returns The validated locale or defaultLocale if the input is invalid
+ */
+export function validateLocale(locale: string | undefined): Locale {
+  // Handle undefined case
+  if (!locale) {
+    console.warn(`Undefined locale provided, using default: ${defaultLocale}`);
+    return defaultLocale;
+  }
+
+  // Check if locale is supported
   if (!locales.includes(locale as Locale)) {
+    console.warn(
+      `Unsupported locale: ${locale}, falling back to ${defaultLocale}`
+    );
+    return defaultLocale;
+  }
+
+  return locale as Locale;
+}
+
+/**
+ * Utility function that throws notFound for invalid locales
+ * Use this in route handlers where you want to return 404 for invalid locales
+ */
+export function validateLocaleOrNotFound(
+  locale: string | undefined
+): asserts locale is Locale {
+  if (!locale || !locales.includes(locale as Locale)) {
     notFound();
   }
 }
