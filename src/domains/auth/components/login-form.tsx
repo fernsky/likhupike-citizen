@@ -40,9 +40,9 @@ export default function LoginForm() {
   const formSchema = z.object({
     email: z
       .string()
-      .min(1, { message: t("validation.required") })
-      .email({ message: t("validation.emailValid") }),
-    password: z.string().min(1, { message: t("validation.required") }),
+      .min(1, { message: t("citizen.validation.required") })
+      .email({ message: t("citizen.validation.emailValid") }),
+    password: z.string().min(1, { message: t("citizen.validation.required") }),
   });
 
   type FormValues = z.infer<typeof formSchema>;
