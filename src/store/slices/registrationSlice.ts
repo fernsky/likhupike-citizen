@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RegisterCitizenRequest } from "@/domains/citizen/types";
+import { RegisterCitizenRequest, ApiErrorResponse } from "@/domains/citizen/types";
 import { RootState } from "@/store";
 import { format } from "date-fns";
 import { citizenApi } from "../services/citizenApi";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { SerializedError } from "@reduxjs/toolkit";
 
 export type RegistrationStep =
   | "personal-info"
@@ -128,11 +130,44 @@ export const registrationSlice = createSlice({
         citizenApi.endpoints.registerCitizen.matchRejected,
         (state, action) => {
           state.isSubmitting = false;
-          state.error = action.error.message || "Registration failed";
+
+          // Extract error message from API response if available
+          const errorData = extractApiErrorMessage(action.payload, action.error);
+          state.error = errorData;
         }
       );
   },
 });
+
+// Helper function to extract error message from RTK Query error
+function extractApiErrorMessage(
+  payload: unknown,
+  error: FetchBaseQueryError | SerializedError | undefined
+): string {
+  // Case 1: API returned a structured error response
+  if (payload) {
+    const errorPayload = payload as { data?: unknown };
+    if (errorPayload.data) {
+      const data = errorPayload.data as any;
+      if (data.error && data.error.message) {
+        return data.error.message; // Return the API error message key
+      }
+    }
+  }
+
+  // Case 2: Connection error (could not reach server)
+  if (error && 'status' in error && error.status === 'FETCH_ERROR') {
+    return 'errors.connectionFailed';
+  }
+
+  // Case 3: Server error (5xx)
+  if (error && 'status' in error && typeof error.status === 'number' && error.status >= 500) {
+    return 'errors.serverError';
+  }
+
+  // Case 4: Default fallback
+  return 'errors.registrationFailed';
+}
 
 // Export actions
 export const {

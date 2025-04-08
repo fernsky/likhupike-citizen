@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { getErrorMessage } from "@/lib/utils";
 import PersonalInfoForm from "./registration/personal-info-form";
 import CitizenshipForm from "./registration/citizenship-form";
 import ContactInfoForm from "./registration/contact-info-form";
@@ -45,7 +44,7 @@ export default function RegisterForm() {
   const formData = useSelector(selectFormattedRegistrationData);
   const isSubmitting = useSelector(selectIsSubmitting);
   const isSuccess = useSelector(selectIsSuccess);
-  const error = useSelector(selectRegistrationError);
+  const errorKey = useSelector(selectRegistrationError);
 
   // RTK Query mutation hook
   const [registerCitizen] = useRegisterCitizenMutation();
@@ -128,10 +127,12 @@ export default function RegisterForm() {
           </Alert>
         )}
 
-        {error && (
+        {errorKey && (
           <Alert className="mb-6 bg-red-50 text-red-900 border border-red-200">
-            <AlertTitle>{t("errors.registrationFailed")}</AlertTitle>
-            <AlertDescription>{getErrorMessage(error)}</AlertDescription>
+            <AlertTitle>{t("common.errors.registrationFailed")}</AlertTitle>
+            <AlertDescription>
+              {t(errorKey, { fallback: t("errors.unknownError") })}
+            </AlertDescription>
           </Alert>
         )}
 

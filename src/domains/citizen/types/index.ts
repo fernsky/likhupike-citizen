@@ -10,7 +10,7 @@ export interface CitizenProfile {
   photoUrl?: string;
   citizenshipFrontUrl?: string;
   citizenshipBackUrl?: string;
-  status: 'ACTIVE' | 'PENDING_REGISTRATION' | 'INACTIVE' | 'LOCKED';
+  status: "ACTIVE" | "PENDING_REGISTRATION" | "INACTIVE" | "LOCKED";
   createdAt: string;
   updatedAt: string;
 }
@@ -52,3 +52,16 @@ export interface ApiResponse<T> {
   message: string;
   data: T;
 }
+
+export interface ApiErrorResponse {
+  success: false;
+  error: {
+    code: string;
+    message: string;
+    details?: Record<string, unknown>;
+    status: number;
+  };
+}
+
+// A type that can represent either a successful or error response
+export type ApiResult<T> = ApiResponse<T> | ApiErrorResponse;
