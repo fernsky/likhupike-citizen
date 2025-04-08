@@ -42,5 +42,9 @@
     "title": "Services - Likhupike Digital Profile System",
     "description": "Explore and access government services available through the Likhupike Digital Profile System.",
     "keywords": "government services, online services, e-governance, public services, likhupike services"
+  },
+  "registrationSuccess": {
+    "title": "Registration Successful | Digital Profile System",
+    "description": "Your registration with the Digital Profile Information System has been received. Follow the next steps to complete your profile verification."
   }
 }

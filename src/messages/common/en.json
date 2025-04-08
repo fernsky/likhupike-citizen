@@ -23,7 +23,15 @@
     "invalidEmail": "Please enter a valid email address",
     "passwordMismatch": "Passwords do not match",
     "invalidPassword": "Password must contain at least 8 characters, including uppercase, lowercase, number and special character",
-    "submitting": "Submitting..."
+    "submitting": "Submitting...",
+    "next": "Next",
+    "back": "Back"
+  },
+  "errors": {
+    "connectionFailed": "Could not connect to the server. Please check your internet connection and try again.",
+    "serverError": "The server encountered an error. Please try again later.",
+    "unknownError": "An unexpected error occurred. Please try again.",
+    "registrationFailed": "Registration failed"
   },
   "homepage": {
     "services": {
