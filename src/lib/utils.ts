@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { Inter } from "next/font/google";
 
 /**
  * Utility function to merge Tailwind CSS classes safely
@@ -30,3 +31,10 @@ export function getErrorMessage(error: unknown): string {
 
   return "An unexpected error occurred";
 }
+
+// Define Inter font for English
+export const InterFont = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});

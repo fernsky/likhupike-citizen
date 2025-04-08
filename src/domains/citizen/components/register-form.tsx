@@ -42,6 +42,7 @@ import {
 } from "@/components/ui/tooltip";
 import { cn, getErrorMessage } from "@/lib/utils";
 import { RegisterCitizenRequest } from "@/domains/citizen/types";
+import { InterFont } from "@/lib/utils";
 
 export default function RegisterForm() {
   const t = useTranslations();
@@ -259,7 +260,9 @@ export default function RegisterForm() {
                     {...register("name")}
                     placeholder="Enter your full name"
                     className={cn(
-                      errors.name && "border-red-500 focus-visible:ring-red-500"
+                      errors.name &&
+                        "border-red-500 focus-visible:ring-red-500" &&
+                        InterFont.className
                     )}
                     aria-invalid={!!errors.name}
                   />
