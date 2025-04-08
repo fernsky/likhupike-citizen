@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import Layout from "@/components/layout/main-layout";
@@ -9,11 +8,12 @@ import RegisterForm from "@/domains/citizen/components/register-form";
 import { Card, CardContent } from "@/components/ui/card";
 import { ExternalLink } from "lucide-react";
 
+type Params = Promise<{ locale: string }>;
+
 export async function generateMetadata(props: {
-  params: Promise<{ locale: string }>;
+  params: Params;
 }): Promise<Metadata> {
   const params = await props.params;
-
   const { locale } = params;
 
   const t = await getTranslations({ locale, namespace: "seo.register" });
@@ -42,8 +42,11 @@ export async function generateMetadata(props: {
   };
 }
 
-export default function RegisterPage() {
-  const t = useTranslations("auth.register");
+export default async function RegisterPage(props: { params: Params }) {
+  const params = await props.params;
+  const { locale } = params;
+
+  const t = await getTranslations({ locale, namespace: "auth.register" });
 
   return (
     <Layout>
