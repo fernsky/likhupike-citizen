@@ -5,10 +5,6 @@ import {
   generateSEOMetadata,
   getOrganizationStructuredData,
 } from "@/utils/seo-helpers";
-import {
-  useCommonTranslations,
-  useDomainTranslations,
-} from "@/utils/i18n-helpers";
 import Layout from "@/components/layout/main-layout";
 import { Container } from "@/components/ui/container";
 import {
@@ -20,18 +16,15 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, FileText, ShieldCheck, User } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 // Generate static metadata for SEO
-export async function generateMetadata(
-  props: {
-    params: Promise<{ locale: string }>;
-  }
-): Promise<Metadata> {
+export async function generateMetadata(props: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
   const params = await props.params;
 
-  const {
-    locale
-  } = params;
+  const { locale } = params;
 
   return generateSEOMetadata(locale, "home", {
     // Additional page-specific metadata
@@ -51,8 +44,7 @@ export function generateStaticParams() {
 }
 
 export default function HomePage() {
-  const common = useCommonTranslations();
-  const citizen = useDomainTranslations("citizen");
+  const t = useTranslations();
 
   return (
     <Layout>
@@ -73,26 +65,26 @@ export default function HomePage() {
               id="hero-heading"
               className="text-4xl md:text-5xl font-bold tracking-tight mb-4"
             >
-              {citizen("registration.title")}
+              {t("citizen.registration.title")}
             </h1>
             <p className="mt-4 text-lg text-muted-foreground">
-              {citizen("registration.description")}
+              {t("citizen.registration.description")}
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Button asChild size="lg">
                 <Link href="/register">
-                  {citizen("registration.registerNow")}
+                  {t("citizen.registration.registerNow")}
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <Link href="/login">{common("navigation.login")}</Link>
+                <Link href="/login">{t("common.navigation.login")}</Link>
               </Button>
             </div>
           </div>
           <div className="flex-1 mt-8 md:mt-0">
             <Image
               src="/images/hero-illustration.svg"
-              alt={common("appName")}
+              alt={t("common.appName")}
               width={600}
               height={400}
               className="w-full"
@@ -107,10 +99,10 @@ export default function HomePage() {
             id="services-heading"
             className="text-3xl font-bold text-center mb-4"
           >
-            {common("homepage.services.heading")}
+            {t("common.homepage.services.heading")}
           </h2>
           <p className="text-center text-lg text-muted-foreground mb-12 max-w-3xl mx-auto">
-            {common("homepage.services.description")}
+            {t("common.homepage.services.description")}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -120,15 +112,15 @@ export default function HomePage() {
                   <User className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                 </div>
                 <CardTitle>
-                  {common("homepage.services.profileManagement.title")}
+                  {t("common.homepage.services.profileManagement.title")}
                 </CardTitle>
                 <CardDescription>
-                  {common("homepage.services.profileManagement.description")}
+                  {t("common.homepage.services.profileManagement.description")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="mb-4">
-                  {common("homepage.services.profileManagement.content")}
+                  {t("common.homepage.services.profileManagement.content")}
                 </p>
                 <Button
                   variant="ghost"
@@ -137,7 +129,7 @@ export default function HomePage() {
                   asChild
                 >
                   <Link href="/profile">
-                    {common("button.learnMore")}{" "}
+                    {t("common.button.learnMore")}{" "}
                     <ChevronRight className="h-4 w-4" />
                   </Link>
                 </Button>
@@ -150,15 +142,15 @@ export default function HomePage() {
                   <FileText className="h-6 w-6 text-amber-600 dark:text-amber-400" />
                 </div>
                 <CardTitle>
-                  {common("homepage.services.documentUpload.title")}
+                  {t("common.homepage.services.documentUpload.title")}
                 </CardTitle>
                 <CardDescription>
-                  {common("homepage.services.documentUpload.description")}
+                  {t("common.homepage.services.documentUpload.description")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="mb-4">
-                  {common("homepage.services.documentUpload.content")}
+                  {t("common.homepage.services.documentUpload.content")}
                 </p>
                 <Button
                   variant="ghost"
@@ -167,7 +159,7 @@ export default function HomePage() {
                   asChild
                 >
                   <Link href="/documents">
-                    {common("button.learnMore")}{" "}
+                    {t("common.button.learnMore")}{" "}
                     <ChevronRight className="h-4 w-4" />
                   </Link>
                 </Button>
@@ -180,15 +172,15 @@ export default function HomePage() {
                   <ShieldCheck className="h-6 w-6 text-green-600 dark:text-green-400" />
                 </div>
                 <CardTitle>
-                  {common("homepage.services.digitalIdentity.title")}
+                  {t("common.homepage.services.digitalIdentity.title")}
                 </CardTitle>
                 <CardDescription>
-                  {common("homepage.services.digitalIdentity.description")}
+                  {t("common.homepage.services.digitalIdentity.description")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="mb-4">
-                  {common("homepage.services.digitalIdentity.content")}
+                  {t("common.homepage.services.digitalIdentity.content")}
                 </p>
                 <Button
                   variant="ghost"
@@ -197,7 +189,7 @@ export default function HomePage() {
                   asChild
                 >
                   <Link href="/services">
-                    {common("button.learnMore")}{" "}
+                    {t("common.button.learnMore")}{" "}
                     <ChevronRight className="h-4 w-4" />
                   </Link>
                 </Button>
@@ -212,16 +204,18 @@ export default function HomePage() {
           className="py-16 bg-slate-50 dark:bg-slate-800/50 rounded-xl p-8 my-12"
         >
           <h2 id="info-heading" className="text-3xl font-bold text-center mb-6">
-            {common("homepage.information.heading")}
+            {t("common.homepage.information.heading")}
           </h2>
           <div className="max-w-3xl mx-auto text-center">
-            <p className="mb-4">{common("homepage.information.description")}</p>
+            <p className="mb-4">
+              {t("common.homepage.information.description")}
+            </p>
             <p className="text-muted-foreground mb-8">
-              {common("homepage.information.additionalInfo")}
+              {t("common.homepage.information.additionalInfo")}
             </p>
             <Button asChild>
               <Link href="/about">
-                {common("homepage.information.aboutButton")}
+                {t("common.homepage.information.aboutButton")}
               </Link>
             </Button>
           </div>

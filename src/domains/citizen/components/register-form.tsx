@@ -618,7 +618,8 @@ export default function RegisterForm() {
 
           <CardFooter className="flex justify-between items-center px-0 pt-2">
             <div className="text-sm text-muted-foreground">
-              <span className="text-red-500">*</span> {t("form.requiredFields")}
+              <span className="text-red-500">*</span>{" "}
+              {t("common.form.requiredFields")}
             </div>
             <Button
               type="submit"

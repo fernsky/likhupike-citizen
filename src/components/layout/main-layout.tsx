@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useCommonTranslations } from "@/utils/i18n-helpers";
+import { useTranslations } from "next-intl";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/mode-toggle";
@@ -27,12 +27,12 @@ export default function MainLayout({
   showHeader = true,
   showFooter = true,
 }: MainLayoutProps) {
-  const common = useCommonTranslations();
+  const t = useTranslations();
 
   // Define navigation links
   const navLinks = [
-    { href: "/", label: common("navigation.home") },
-    { href: "/profile", label: common("navigation.myProfile") },
+    { href: "/", label: t("common.navigation.home") },
+    { href: "/profile", label: t("common.navigation.myProfile") },
   ];
 
   return (
@@ -45,14 +45,14 @@ export default function MainLayout({
                 <Link href="/" className="flex items-center space-x-2">
                   <Image
                     src="/logo.svg"
-                    alt={common("appName")}
+                    alt={t("common.appName")}
                     width={32}
                     height={32}
                     className="h-8 w-auto"
                     priority
                   />
                   <span className="font-bold hidden md:inline-block">
-                    {common("appName")}
+                    {t("common.appName")}
                   </span>
                 </Link>
               </div>
@@ -69,10 +69,12 @@ export default function MainLayout({
                   size="sm"
                   className="hidden md:flex"
                 >
-                  <Link href="/login">{common("navigation.login")}</Link>
+                  <Link href="/login">{t("common.navigation.login")}</Link>
                 </Button>
                 <Button asChild size="sm" className="hidden md:flex">
-                  <Link href="/register">{common("navigation.register")}</Link>
+                  <Link href="/register">
+                    {t("common.navigation.register")}
+                  </Link>
                 </Button>
 
                 {/* Mobile menu button would go here */}
@@ -92,12 +94,12 @@ export default function MainLayout({
                 <Link href="/" className="flex items-center space-x-2">
                   <Image
                     src="/logo.svg"
-                    alt={common("appName")}
+                    alt={t("common.appName")}
                     width={24}
                     height={24}
                     className="h-6 w-auto"
                   />
-                  <span className="font-semibold">{common("appName")}</span>
+                  <span className="font-semibold">{t("common.appName")}</span>
                 </Link>
                 <p className="text-sm text-muted-foreground mt-2">
                   &copy; {new Date().getFullYear()} Government of Nepal. All
