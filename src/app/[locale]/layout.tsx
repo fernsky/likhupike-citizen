@@ -1,13 +1,26 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getTranslations } from "next-intl/server";
-import { Inter } from "next/font/google";
+import { Inter, Noto_Sans_Devanagari } from "next/font/google";
 import { notFound } from "next/navigation";
 import { locales } from "@/i18n/config";
 import { Providers } from "@/components/providers";
 
 import "@/app/globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+// Define Inter font for English
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
+
+// Define Noto Sans Devanagari font for Nepali
+const notoSansDevanagari = Noto_Sans_Devanagari({
+  subsets: ["devanagari"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  display: "swap",
+  variable: "--font-noto-sans-devanagari",
+});
 
 // Pre-generate all locale variants at build time
 export function generateStaticParams() {
@@ -144,6 +157,12 @@ export default async function RootLayout(props: {
     notFound();
   }
 
+  // Choose the appropriate font based on locale
+  const fontClass =
+    locale === "ne" ? notoSansDevanagari.className : inter.className;
+  // Include both font variables for theming purposes
+  const fontVariables = `${inter.variable} ${notoSansDevanagari.variable}`;
+
   // Load domain-structured messages for the current locale
   let messages;
   try {
@@ -170,6 +189,7 @@ export default async function RootLayout(props: {
     <html
       lang={locale}
       dir={locale === "ne" ? "ltr" : "ltr"}
+      className={fontVariables}
       suppressHydrationWarning
     >
       <head>
@@ -181,7 +201,7 @@ export default async function RootLayout(props: {
         />
         <meta name="gov:confidentiality" content="public" />
       </head>
-      <body className={inter.className}>
+      <body className={fontClass}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Providers>{children}</Providers>
         </NextIntlClientProvider>
