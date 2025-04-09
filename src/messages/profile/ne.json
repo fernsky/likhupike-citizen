@@ -4,10 +4,22 @@
   "state": {
     "uploading": "अपलोड गर्दै..."
   },
+  "documentState": {
+    "approved": "प्रमाणित",
+    "underReview": "समीक्षा अन्तर्गत",
+    "rejectedBlurry": "अस्वीकृत: अस्पष्ट",
+    "rejectedUnsuitable": "अस्वीकृत: अनुपयुक्त",
+    "rejectedMismatch": "अस्वीकृत: जानकारी मेल खाँदैन",
+    "rejectedInconsistent": "अस्वीकृत: असंगत",
+    "notUploaded": "अपलोड भएको छैन",
+    "note": "टिप्पणी"
+  },
   "actions": {
     "edit": "प्रोफाइल सम्पादन",
     "uploadPhoto": "फोटो अपलोड",
-    "replacePhoto": "फोटो बदल्नुहोस्"
+    "replacePhoto": "फोटो बदल्नुहोस्",
+    "uploadDocument": "कागजात अपलोड",
+    "replaceDocument": "कागजात बदल्नुहोस्"
   },
   "tabs": {
     "details": "विवरणहरू",

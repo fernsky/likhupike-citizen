@@ -7,7 +7,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { CitizenProfile } from "@/domains/citizen/types";
-import { DocumentUploadCard } from "../document-upload-card";
+import { PhotoUploadCard } from "../document-uploads/photo-upload-card";
+import { CitizenshipFrontUploadCard } from "../document-uploads/citizenship-front-upload-card";
+import { CitizenshipBackUploadCard } from "../document-uploads/citizenship-back-upload-card";
 
 interface ProfileDocumentsTabProps {
   profile: CitizenProfile;
@@ -28,25 +30,22 @@ export function ProfileDocumentsTab({
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <DocumentUploadCard
+          <CitizenshipFrontUploadCard
             title={t("documents.citizenshipFront")}
             description={t("documents.citizenshipFrontDesc")}
             documentInfo={profile.documents.citizenshipFront}
-            documentType="citizenshipFront"
             locale={locale}
           />
-          <DocumentUploadCard
+          <CitizenshipBackUploadCard
             title={t("documents.citizenshipBack")}
             description={t("documents.citizenshipBackDesc")}
             documentInfo={profile.documents.citizenshipBack}
-            documentType="citizenshipBack"
             locale={locale}
           />
-          <DocumentUploadCard
+          <PhotoUploadCard
             title={t("documents.photo")}
             description={t("documents.photoDesc")}
             documentInfo={profile.documents.photo}
-            documentType="photo"
             locale={locale}
           />
         </div>

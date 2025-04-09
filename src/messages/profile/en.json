@@ -4,10 +4,22 @@
   "state": {
     "uploading": "Uploading..."
   },
+  "documentState": {
+    "approved": "Approved",
+    "underReview": "Under Review",
+    "rejectedBlurry": "Rejected: Too Blurry",
+    "rejectedUnsuitable": "Rejected: Unsuitable",
+    "rejectedMismatch": "Rejected: Mismatch",
+    "rejectedInconsistent": "Rejected: Inconsistent",
+    "notUploaded": "Not Uploaded",
+    "note": "Note"
+  },
   "actions": {
     "edit": "Edit Profile",
     "uploadPhoto": "Upload Photo",
-    "replacePhoto": "Replace Photo"
+    "replacePhoto": "Replace Photo",
+    "uploadDocument": "Upload Document",
+    "replaceDocument": "Replace Document"
   },
   "tabs": {
     "details": "Details",

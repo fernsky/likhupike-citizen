@@ -9,13 +9,37 @@
   },
   "button": {
     "submit": "Submit",
-    "cancel": "Cancel",
     "save": "Save",
-    "update": "Update",
-    "upload": "Upload",
+    "cancel": "Cancel",
     "delete": "Delete",
+    "edit": "Edit",
     "back": "Back",
-    "learnMore": "Learn more"
+    "continue": "Continue",
+    "learnMore": "Learn More",
+    "close": "Close"
+  },
+  "imageViewer": {
+    "zoomIn": "Zoom In",
+    "zoomOut": "Zoom Out",
+    "rotate": "Rotate",
+    "download": "Download",
+    "reset": "Reset View",
+    "fullscreen": "Fullscreen",
+    "dragToMove": "Drag to move image",
+    "close": "Close"
+  },
+  "status": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "pending": "Pending",
+    "completed": "Completed"
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Please enter a valid email address",
+    "password": "Password must be at least 8 characters",
+    "match": "Fields do not match"
   },
   "form": {
     "requiredFields": "Fields marked with * are required",

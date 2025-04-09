@@ -3,13 +3,10 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { AlertCircle, Camera, CheckCircle, Clock, User } from "lucide-react";
+import { AlertCircle, CheckCircle, Clock, User } from "lucide-react";
 import { CitizenProfile } from "@/domains/citizen/types";
 import { DetailItem } from "./detail-item";
-import { useState } from "react";
-import { useUploadPhotoMutation } from "@/store/services/citizenApi";
 
 interface ProfilePhotoCardProps {
   profile: CitizenProfile;
@@ -17,8 +14,6 @@ interface ProfilePhotoCardProps {
 
 export function ProfilePhotoCard({ profile }: ProfilePhotoCardProps) {
   const t = useTranslations("profile");
-  const [uploadPhoto] = useUploadPhotoMutation();
-  const [isUploading, setIsUploading] = useState(false);
 
   // Determine verification status for display
   const verificationStatus = profile.isApproved
@@ -29,24 +24,6 @@ export function ProfilePhotoCard({ profile }: ProfilePhotoCardProps) {
       : "action";
 
   const photoUrl = profile.documents.photo?.url || null;
-
-  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files || !files[0]) return;
-
-    const file = files[0];
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      setIsUploading(true);
-      await uploadPhoto(formData).unwrap();
-    } catch (error) {
-      console.error("Error uploading photo:", error);
-    } finally {
-      setIsUploading(false);
-    }
-  };
 
   return (
     <Card>
@@ -64,26 +41,6 @@ export function ProfilePhotoCard({ profile }: ProfilePhotoCardProps) {
             ) : (
               <User className="h-12 w-12 text-slate-500" />
             )}
-          </div>
-          <div className="absolute bottom-0 right-0">
-            <input
-              type="file"
-              id="photo-upload"
-              className="hidden"
-              accept="image/*"
-              onChange={handlePhotoUpload}
-              disabled={isUploading}
-            />
-            <Button
-              size="icon"
-              variant="secondary"
-              className="rounded-full"
-              title={t("actions.uploadPhoto")}
-              onClick={() => document.getElementById("photo-upload")?.click()}
-              disabled={isUploading}
-            >
-              <Camera className="h-4 w-4" />
-            </Button>
           </div>
         </div>
 
