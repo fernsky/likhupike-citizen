@@ -152,9 +152,9 @@ export default function DashboardHeader() {
                   className="flex items-center gap-2"
                 >
                   <div className="h-8 w-8 rounded-full bg-slate-200 flex items-center justify-center overflow-hidden">
-                    {citizenProfile?.photoUrl ? (
+                    {citizenProfile?.documents?.photo?.url ? (
                       <Image
-                        src={citizenProfile.photoUrl}
+                        src={citizenProfile.documents.photo.url}
                         alt={citizenProfile.name}
                         width={32}
                         height={32}

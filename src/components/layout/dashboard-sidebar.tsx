@@ -29,11 +29,11 @@ export default function DashboardSidebar() {
   const { data: profile } = useSelector((state: RootState) => state.profile);
 
   // Profile verification status tags
-  const isProfileComplete = profile?.status === "ACTIVE";
+  const isProfileComplete = profile?.state === "APPROVED";
   const isProfilePending =
-    profile?.status === "PENDING_REGISTRATION" ||
-    profile?.status === "UNDER_REVIEW";
-  const needsAction = profile?.status === "ACTION_REQUIRED";
+    profile?.state === "PENDING_REGISTRATION" ||
+    profile?.state === "UNDER_REVIEW";
+  const needsAction = profile?.state === "ACTION_REQUIRED";
 
   // Check if current route is active
   const isActive = (path: string) => {
