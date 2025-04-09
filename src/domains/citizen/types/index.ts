@@ -1,3 +1,62 @@
+/**
+ * Possible states for a citizen in the verification workflow
+ */
+export type CitizenState =
+  | "PENDING_REGISTRATION" // Newly self-registered citizens
+  | "UNDER_REVIEW" // Registration is being reviewed by administrator
+  | "ACTION_REQUIRED" // Issues that require citizen action
+  | "REJECTED" // Registration has been rejected
+  | "APPROVED"; // Registration is fully verified and approved
+
+/**
+ * Possible states for documents in the verification workflow
+ */
+export type DocumentState =
+  | "NOT_UPLOADED" // Document hasn't been uploaded yet
+  | "AWAITING_REVIEW" // Document is waiting for administrator review
+  | "REJECTED_BLURRY" // Document rejected because it's too blurry or unclear
+  | "REJECTED_UNSUITABLE" // Document rejected because it's unsuitable
+  | "REJECTED_MISMATCH" // Document rejected due to mismatched information
+  | "REJECTED_INCONSISTENT" // Document rejected due to inconsistency with other documents
+  | "APPROVED"; // Document has been approved and verified
+
+/**
+ * Address information following Nepal's administrative structure
+ */
+export interface AddressInfo {
+  provinceCode: string;
+  provinceName: string;
+  provinceNameNepali?: string;
+  districtCode: string;
+  districtName: string;
+  districtNameNepali?: string;
+  municipalityCode: string;
+  municipalityName: string;
+  municipalityNameNepali?: string;
+  municipalityType: string;
+  wardNumber: number;
+  streetAddress?: string;
+}
+
+/**
+ * Document information structure
+ */
+export interface DocumentInfo {
+  url: string | null;
+  state: DocumentState;
+  note: string | null;
+  uploadedAt: string | null;
+}
+
+/**
+ * Document collection for a citizen
+ */
+export interface CitizenDocuments {
+  photo: DocumentInfo | null;
+  citizenshipFront: DocumentInfo | null;
+  citizenshipBack: DocumentInfo | null;
+}
+
 export interface CitizenProfile {
   id: string;
   name: string;
@@ -7,16 +66,18 @@ export interface CitizenProfile {
   citizenshipIssuedOffice: string;
   email: string;
   phoneNumber?: string;
-  photoUrl?: string;
-  citizenshipFrontUrl?: string;
-  citizenshipBackUrl?: string;
-  status:
-    | "ACTIVE"
-    | "PENDING_REGISTRATION"
-    | "INACTIVE"
-    | "LOCKED"
-    | "UNDER_REVIEW"
-    | "ACTION_REQUIRED";
+  permanentAddress: AddressInfo | null;
+  temporaryAddress: AddressInfo | null;
+  fatherName: string | null;
+  grandfatherName: string | null;
+  spouseName: string | null;
+  state: CitizenState;
+  stateNote: string | null;
+  stateUpdatedAt: string | null;
+  stateUpdatedBy: string | null;
+  isApproved: boolean;
+  approvedAt: string | null;
+  documents: CitizenDocuments;
   createdAt: string;
   updatedAt: string;
 }
@@ -36,6 +97,11 @@ export interface RegisterCitizenRequest {
 export interface UpdateProfileRequest {
   email?: string;
   phoneNumber?: string;
+  permanentAddress?: string;
+  temporaryAddress?: string;
+  fatherName?: string;
+  grandfatherName?: string;
+  spouseName?: string;
 }
 
 export interface ChangePasswordRequest {
