@@ -33,8 +33,8 @@ export default function ForgotPasswordForm() {
   const formSchema = z.object({
     email: z
       .string()
-      .min(1, { message: t("validation.required") })
-      .email({ message: t("validation.emailValid") }),
+      .min(1, { message: t("citizen.validation.required") })
+      .email({ message: t("citizen.validation.emailValid") }),
   });
 
   type FormValues = z.infer<typeof formSchema>;
