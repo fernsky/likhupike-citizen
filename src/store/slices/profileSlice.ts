@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CitizenProfile } from "@/domains/citizen/types";
+import { CitizenProfile, DocumentInfo } from "@/domains/citizen/types";
 
 interface ProfileState {
   data: CitizenProfile | null;
@@ -38,25 +38,37 @@ const profileSlice = createSlice({
         state.data = { ...state.data, ...action.payload };
       }
     },
-    updatePhotoSuccess(state, action: PayloadAction<string>) {
+    updatePhotoSuccess(state, action: PayloadAction<DocumentInfo>) {
       if (state.data) {
-        state.data = { ...state.data, photoUrl: action.payload };
+        state.data = {
+          ...state.data,
+          documents: {
+            ...state.data.documents,
+            photo: action.payload,
+          },
+        };
       }
     },
     updateDocumentSuccess(
       state,
-      action: PayloadAction<{ type: "front" | "back"; url: string }>
+      action: PayloadAction<{ type: "front" | "back"; document: DocumentInfo }>
     ) {
       if (state.data) {
         if (action.payload.type === "front") {
           state.data = {
             ...state.data,
-            citizenshipFrontUrl: action.payload.url,
+            documents: {
+              ...state.data.documents,
+              citizenshipFront: action.payload.document,
+            },
           };
         } else {
           state.data = {
             ...state.data,
-            citizenshipBackUrl: action.payload.url,
+            documents: {
+              ...state.data.documents,
+              citizenshipBack: action.payload.document,
+            },
           };
         }
       }
