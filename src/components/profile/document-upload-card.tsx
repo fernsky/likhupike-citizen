@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { FileText, Upload } from "lucide-react";
+import { toast } from "sonner";
 import { DocumentInfo } from "@/domains/citizen/types";
 import {
   useUploadCitizenshipFrontMutation,
@@ -28,7 +29,7 @@ export function DocumentUploadCard({
   documentInfo,
   documentType,
 }: DocumentUploadCardProps) {
-  const t = useTranslations("dashboard.profile");
+  const t = useTranslations("profile");
   const [isUploading, setIsUploading] = useState(false);
 
   // Select the appropriate upload mutation based on document type
@@ -78,16 +79,59 @@ export function DocumentUploadCard({
     try {
       setIsUploading(true);
 
-      // Call the appropriate upload mutation
+      let response;
+      // Call the appropriate upload mutation based on document type
       if (documentType === "photo") {
-        await uploadPhoto(formData).unwrap();
+        response = await uploadPhoto(formData);
       } else if (documentType === "citizenshipFront") {
-        await uploadCitizenshipFront(formData).unwrap();
+        response = await uploadCitizenshipFront(formData);
       } else if (documentType === "citizenshipBack") {
-        await uploadCitizenshipBack(formData).unwrap();
+        response = await uploadCitizenshipBack(formData);
       }
-    } catch (error) {
+
+      // Check if the response has data property (success case)
+      if (response && response.data && response.data.success) {
+        // Use the actual success message from the API
+        const successMessage =
+          response.data.message || "Document uploaded successfully";
+        toast.success(successMessage);
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       console.error(`Error uploading ${documentType}:`, error);
+
+      // Extract error details from the API response
+      let errorMessage = "Failed to upload document";
+      let errorDetails = "Please try again later";
+
+      // Check if the error response has a structured format
+      if (error.data) {
+        if (error.data.error) {
+          // For structured API error responses
+          errorMessage = error.data.error.message || errorMessage;
+          errorDetails = error.data.error.details?.error || errorDetails;
+        } else if (!error.data.success) {
+          // For API responses with success: false
+          errorMessage = error.data.message || errorMessage;
+
+          // Handle validation errors which might be in the errors object
+          if (error.data.errors) {
+            const firstErrorKey = Object.keys(error.data.errors)[0];
+            if (
+              firstErrorKey &&
+              Array.isArray(error.data.errors[firstErrorKey])
+            ) {
+              errorDetails =
+                error.data.errors[firstErrorKey][0] || errorDetails;
+            }
+          }
+        }
+      }
+
+      // Show error toast with API provided details
+      toast.error(errorMessage, {
+        description: errorDetails !== errorMessage ? errorDetails : undefined,
+      });
     } finally {
       setIsUploading(false);
     }
@@ -146,10 +190,10 @@ export function DocumentUploadCard({
           >
             <Upload className="mr-2 h-4 w-4" />
             {isUploading
-              ? t("common.state.uploading")
+              ? t("state.uploading")
               : isUploaded
-                ? t("common.action.replace")
-                : t("common.action.upload")}
+                ? t("action.replacePhoto")
+                : t("actions.uploadPhoto")}
           </Button>
         </div>
       </CardContent>

@@ -123,17 +123,9 @@ export interface ApiResponse<T> {
   success: boolean;
   message: string;
   data: T;
-}
-
-export interface ApiErrorResponse {
-  success: false;
-  error: {
-    code: string;
-    message: string;
-    details?: Record<string, unknown>;
-    status: number;
-  };
+  timestamp?: string;
+  errors?: Record<string, string[]>;
 }
 
 // A type that can represent either a successful or error response
-export type ApiResult<T> = ApiResponse<T> | ApiErrorResponse;
+export type ApiResult<T> = ApiResponse<T>;

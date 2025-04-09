@@ -26,7 +26,7 @@ interface ProfileVerificationTabProps {
 export function ProfileVerificationTab({
   profile,
 }: ProfileVerificationTabProps) {
-  const t = useTranslations("dashboard.profile");
+  const t = useTranslations("profile");
 
   // Determine verification status for display
   const verificationStatus = profile.isApproved

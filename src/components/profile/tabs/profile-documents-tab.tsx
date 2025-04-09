@@ -18,7 +18,7 @@ export function ProfileDocumentsTab({
   profile,
   locale,
 }: ProfileDocumentsTabProps) {
-  const t = useTranslations("dashboard.profile");
+  const t = useTranslations("profile");
 
   return (
     <Card>

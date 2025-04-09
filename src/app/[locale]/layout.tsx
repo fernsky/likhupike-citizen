@@ -176,13 +176,15 @@ export default async function RootLayout(props: {
     const dashboardMessages = (
       await import(`@/messages/dashboard/${locale}.json`)
     ).default;
-
+    const profileMessages = (await import(`@/messages/profile/${locale}.json`))
+      .default;
     messages = {
       common: commonMessages,
       seo: seoMessages,
       auth: authMessages,
       citizen: citizenMessages,
       dashboard: dashboardMessages,
+      profile: profileMessages,
     };
   } catch (error) {
     console.error(`Error loading messages for locale ${locale}:`, error);

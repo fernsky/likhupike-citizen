@@ -8,7 +8,7 @@ interface QuickActionsGridProps {
 }
 
 export function QuickActionsGrid({ locale }: QuickActionsGridProps) {
-  const t = useTranslations("dashboard.quickActions");
+  const t = useTranslations("dashboard");
   return (
     <>
       <h2 className="text-xl font-semibold mt-8 mb-4">

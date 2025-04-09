@@ -72,41 +72,47 @@ export const citizenApi = createApi({
     }),
 
     // Upload photo
-    uploadPhoto: builder.mutation<DocumentUploadResponse, FormData>({
+    uploadPhoto: builder.mutation<
+      ApiResponse<DocumentUploadResponse>,
+      FormData
+    >({
       query: (data) => ({
         url: "/citizen-profile/me/photo",
         method: "POST",
         body: data,
         formData: true,
       }),
-      transformResponse: (response: ApiResponse<DocumentUploadResponse>) =>
-        response.data,
+      // Return full API response with message instead of just data
       invalidatesTags: ["CitizenProfile"],
     }),
 
     // Upload citizenship front
-    uploadCitizenshipFront: builder.mutation<DocumentUploadResponse, FormData>({
+    uploadCitizenshipFront: builder.mutation<
+      ApiResponse<DocumentUploadResponse>,
+      FormData
+    >({
       query: (data) => ({
         url: "/citizen-profile/me/citizenship/front",
         method: "POST",
         body: data,
         formData: true,
       }),
-      transformResponse: (response: ApiResponse<DocumentUploadResponse>) =>
-        response.data,
+      // Return full API response with message instead of just data
       invalidatesTags: ["CitizenProfile", "Document"],
     }),
 
     // Upload citizenship back
-    uploadCitizenshipBack: builder.mutation<DocumentUploadResponse, FormData>({
+    uploadCitizenshipBack: builder.mutation<
+      ApiResponse<DocumentUploadResponse>,
+      FormData
+    >({
       query: (data) => ({
         url: "/citizen-profile/me/citizenship/back",
         method: "POST",
         body: data,
         formData: true,
       }),
-      transformResponse: (response: ApiResponse<DocumentUploadResponse>) =>
-        response.data,
+      // Return full API response with message instead of just data
       invalidatesTags: ["CitizenProfile", "Document"],
     }),
   }),

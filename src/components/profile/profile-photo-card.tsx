@@ -16,7 +16,7 @@ interface ProfilePhotoCardProps {
 }
 
 export function ProfilePhotoCard({ profile }: ProfilePhotoCardProps) {
-  const t = useTranslations("dashboard.profile");
+  const t = useTranslations("profile");
   const [uploadPhoto] = useUploadPhotoMutation();
   const [isUploading, setIsUploading] = useState(false);
 

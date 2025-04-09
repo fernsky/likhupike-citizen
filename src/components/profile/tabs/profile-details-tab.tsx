@@ -8,7 +8,7 @@ interface ProfileDetailsTabProps {
 }
 
 export function ProfileDetailsTab({ profile }: ProfileDetailsTabProps) {
-  const t = useTranslations("dashboard.profile");
+  const t = useTranslations("profile");
 
   return (
     <>

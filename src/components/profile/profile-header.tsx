@@ -10,7 +10,7 @@ interface ProfileHeaderProps {
 }
 
 export function ProfileHeader({ locale }: ProfileHeaderProps) {
-  const t = useTranslations("dashboard.profile");
+  const t = useTranslations("profile");
 
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6">

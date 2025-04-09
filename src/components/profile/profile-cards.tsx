@@ -15,7 +15,7 @@ interface ProfileCardsProps {
 }
 
 export function ProfileCards({ locale }: ProfileCardsProps) {
-  const t = useTranslations("dashboard.profile");
+  const t = useTranslations("profile");
   const { data: profile, isLoading } = useGetMyProfileQuery();
   const [activeTab, setActiveTab] = useState("details");
 
