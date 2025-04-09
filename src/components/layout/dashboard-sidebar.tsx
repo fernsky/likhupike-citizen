@@ -152,7 +152,7 @@ export default function DashboardSidebar() {
                     variant="destructive"
                     className="w-full justify-center py-1"
                   >
-                    {t("dashboard.sidebar.actionRequired")}
+                    {t("dashboard.sidebar.action")}
                   </Badge>
                 )}
               </div>

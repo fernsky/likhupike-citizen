@@ -6,14 +6,14 @@ import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import Image from "next/image";
 import { useSelector, useDispatch } from "react-redux";
-import { 
-  LogOut, 
-  Menu, 
-  Settings, 
-  User, 
-  Bell, 
-  ChevronDown, 
-  Globe 
+import {
+  LogOut,
+  Menu,
+  Settings,
+  User,
+  Bell,
+  ChevronDown,
+  Globe,
 } from "lucide-react";
 import { RootState } from "@/store";
 import { logout } from "@/store/slices/authSlice";
@@ -35,16 +35,18 @@ export default function DashboardHeader() {
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useDispatch();
-  
-  const { data: citizenProfile } = useSelector((state: RootState) => state.profile);
+
+  const { data: citizenProfile } = useSelector(
+    (state: RootState) => state.profile
+  );
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
+
   const handleLanguageChange = (newLocale: string) => {
     // Replace the locale segment in the URL
-    const pathWithoutLocale = pathname.split('/').slice(2).join('/');
+    const pathWithoutLocale = pathname.split("/").slice(2).join("/");
     router.push(`/${newLocale}/${pathWithoutLocale}`);
   };
-  
+
   const handleLogout = () => {
     dispatch(logout());
     router.push(`/${locale}/login`);
@@ -65,10 +67,13 @@ export default function DashboardHeader() {
               <Menu className="h-6 w-6" />
               <span className="sr-only">Toggle menu</span>
             </Button>
-            
-            <Link href={`/${locale}/dashboard`} className="flex items-center gap-2">
+
+            <Link
+              href={`/${locale}/dashboard`}
+              className="flex items-center gap-2"
+            >
               <Image
-                src="/images/logo.png"
+                src="/logo.svg"
                 alt="Digital Profile System"
                 width={32}
                 height={32}
@@ -79,7 +84,7 @@ export default function DashboardHeader() {
               </span>
             </Link>
           </div>
-          
+
           {/* Right section: notifications, language, profile */}
           <div className="flex items-center gap-1 md:gap-2">
             {/* Notifications */}
@@ -92,50 +97,67 @@ export default function DashboardHeader() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-80">
-                <DropdownMenuLabel>{t("dashboard.notifications.title")}</DropdownMenuLabel>
+                <DropdownMenuLabel>
+                  {t("dashboard.notifications.title")}
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <div className="max-h-[300px] overflow-auto">
                   {/* Empty state */}
                   <div className="py-8 text-center">
-                    <p className="text-sm text-muted-foreground">{t("dashboard.notifications.empty")}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t("dashboard.notifications.empty")}
+                    </p>
                   </div>
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
-            
+
             {/* Language Selector */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="flex items-center gap-1">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="flex items-center gap-1"
+                >
                   <Globe className="h-4 w-4" />
-                  <span className="hidden md:inline-block">{locale === 'en' ? 'English' : 'नेपाली'}</span>
+                  <span className="hidden md:inline-block">
+                    {locale === "en" ? "English" : "नेपाली"}
+                  </span>
                   <ChevronDown className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 {locales.map((loc) => (
-                  <DropdownMenuItem 
+                  <DropdownMenuItem
                     key={loc}
                     onClick={() => handleLanguageChange(loc)}
-                    className={cn("cursor-pointer", locale === loc && "bg-accent")}
+                    className={cn(
+                      "cursor-pointer",
+                      locale === loc && "bg-accent"
+                    )}
                   >
-                    {loc === 'en' ? 'English' : 'नेपाली'}
+                    {loc === "en" ? "English" : "नेपाली"}
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
-            
+
             {/* Profile Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="flex items-center gap-2"
+                >
                   <div className="h-8 w-8 rounded-full bg-slate-200 flex items-center justify-center overflow-hidden">
                     {citizenProfile?.photoUrl ? (
-                      <Image 
-                        src={citizenProfile.photoUrl} 
-                        alt={citizenProfile.name} 
-                        width={32} 
-                        height={32} 
+                      <Image
+                        src={citizenProfile.photoUrl}
+                        alt={citizenProfile.name}
+                        width={32}
+                        height={32}
                         className="h-full w-full object-cover"
                       />
                     ) : (
@@ -143,28 +165,40 @@ export default function DashboardHeader() {
                     )}
                   </div>
                   <span className="hidden md:inline-block font-medium">
-                    {citizenProfile?.name?.split(' ')[0] || t("dashboard.user.greeting")}
+                    {citizenProfile?.name?.split(" ")[0] ||
+                      t("dashboard.user.greeting")}
                   </span>
                   <ChevronDown className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel>{citizenProfile?.name || t("dashboard.user.profile")}</DropdownMenuLabel>
+                <DropdownMenuLabel>
+                  {citizenProfile?.name || t("dashboard.user.profile")}
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link href={`/${locale}/dashboard/profile`} className="cursor-pointer">
+                  <Link
+                    href={`/${locale}/dashboard/profile`}
+                    className="cursor-pointer"
+                  >
                     <User className="h-4 w-4 mr-2" />
                     {t("dashboard.menu.profile")}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href={`/${locale}/dashboard/settings`} className="cursor-pointer">
+                  <Link
+                    href={`/${locale}/dashboard/settings`}
+                    className="cursor-pointer"
+                  >
                     <Settings className="h-4 w-4 mr-2" />
                     {t("dashboard.menu.settings")}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-500 focus:text-red-500">
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="cursor-pointer text-red-500 focus:text-red-500"
+                >
                   <LogOut className="h-4 w-4 mr-2" />
                   {t("common.navigation.logout")}
                 </DropdownMenuItem>
