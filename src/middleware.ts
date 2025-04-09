@@ -62,7 +62,7 @@ export default function middleware(request: NextRequest) {
   if (isProtectedRoute) {
     // Get auth token and check if it's valid
     const token = request.cookies.get("auth_token")?.value;
-    console.log(request.cookies);
+
     // If no token or token is "undefined" string or invalid, redirect to login
     if (!token || token === "undefined" || !isTokenValid(token)) {
       // Get locale from path
@@ -110,23 +110,18 @@ export default function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
+// Fix: Use static matcher patterns instead of spreading array
 export const config = {
-  // Update matcher configuration to properly exclude static resources
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public folder files (public assets)
-     * Also exclude API routes
-     */
+    // Match all request paths except for the ones starting with:
     "/((?!_next/static|_next/image|favicon.ico|.*\\..*|api).*)",
-    // Include only the protected routes that need auth checking
-    ...protectedPaths.map((path) =>
-      path.endsWith("/*")
-        ? `/:locale${path.slice(0, -2)}/:path*`
-        : `/:locale${path}`
-    ),
+    // Match specific protected routes with locale
+    "/:locale/dashboard",
+    "/:locale/dashboard/:path*",
+    "/:locale/profile",
+    "/:locale/profile/:path*",
+    "/:locale/settings",
+    "/:locale/documents",
+    "/:locale/documents/:path*",
   ],
 };
