@@ -40,7 +40,7 @@ export const authApi = createApi({
         // Store tokens in localStorage upon successful login
         if (response.success && response.data) {
           // Use our updated auth utils to set tokens in both localStorage and cookies
-          setAuthToken(response.data.accessToken, response.data.expiresIn);
+          setAuthToken(response.data.token, response.data.expiresIn);
           localStorage.setItem("refresh_token", response.data.refreshToken);
           localStorage.setItem("user_id", response.data.citizenId);
           localStorage.setItem(
@@ -66,7 +66,7 @@ export const authApi = createApi({
         // Update stored tokens
         if (response.success && response.data) {
           // Use our updated auth utils to set tokens in both localStorage and cookies
-          setAuthToken(response.data.accessToken, response.data.expiresIn);
+          setAuthToken(response.data.token, response.data.expiresIn);
           localStorage.setItem("refresh_token", response.data.refreshToken);
           localStorage.setItem("user_id", response.data.citizenId);
           localStorage.setItem(

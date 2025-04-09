@@ -6,7 +6,13 @@ export type Locale = (typeof locales)[number];
 export const defaultLocale = "en" as const;
 
 // Define domains for which we have translations
-export const domains = ["common", "auth", "citizen", "seo"] as const;
+export const domains = [
+  "common",
+  "auth",
+  "citizen",
+  "seo",
+  "dashboard",
+] as const;
 export type Domain = (typeof domains)[number];
 
 // Define locale display names

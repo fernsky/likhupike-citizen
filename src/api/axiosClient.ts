@@ -4,6 +4,8 @@ import axios, {
   AxiosRequestConfig,
   AxiosResponse,
 } from "axios";
+import { getAuthToken, setAuthToken, removeAuthToken } from "@/lib/auth-utils";
+import { authConfig } from "@/config/middleware-config";
 
 // Create API instance with default config
 const api: AxiosInstance = axios.create({
@@ -18,7 +20,7 @@ const api: AxiosInstance = axios.create({
 // Request interceptor for API calls
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("auth_token");
+    const token = getAuthToken(); // Use our auth utility instead of direct localStorage access
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
@@ -50,51 +52,83 @@ api.interceptors.response.use(
 
         if (!refreshToken) {
           // No refresh token available, redirect to login
-          window.location.href = "/auth/login";
+          handleAuthRedirect();
           return Promise.reject(error);
         }
 
         // Call refresh token endpoint
         const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/refresh-token`,
-          { refreshToken },
-          { headers: { "Content-Type": "application/json" } }
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/citizen-auth/refresh`, // Updated endpoint to match authApi
+          {},
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "X-Refresh-Token": refreshToken,
+            },
+          }
         );
 
         if (response.data.data?.accessToken) {
-          // Store new tokens
-          localStorage.setItem("auth_token", response.data.data.accessToken);
+          const tokenData = response.data.data;
+
+          // Use our utility to store tokens in both localStorage and cookies
+          setAuthToken(tokenData.accessToken, tokenData.expiresIn);
+          localStorage.setItem("refresh_token", tokenData.refreshToken);
           localStorage.setItem(
-            "refresh_token",
-            response.data.data.refreshToken
+            "token_expiry",
+            String(Date.now() + tokenData.expiresIn * 1000)
           );
 
           // Update authorization header and retry original request
           api.defaults.headers.common["Authorization"] =
-            `Bearer ${response.data.data.accessToken}`;
+            `Bearer ${tokenData.accessToken}`;
+
           return api(originalRequest);
         }
       } catch (refreshError) {
         // Refresh token failed, redirect to login
-        localStorage.removeItem("auth_token");
+        removeAuthToken(); // Use our utility to clear tokens from both localStorage and cookies
         localStorage.removeItem("refresh_token");
-        window.location.href = "/auth/login";
+        localStorage.removeItem("token_expiry");
+
+        handleAuthRedirect();
         return Promise.reject(refreshError);
       }
     }
 
     // For 403 Forbidden responses, redirect to unauthorized page
     if (error.response?.status === 403) {
-      window.location.href = "/unauthorized";
+      const locale = getLocale();
+      window.location.href = `/${locale}/unauthorized`;
     }
 
     // For 503 Service Unavailable, show maintenance page
     if (error.response?.status === 503) {
-      window.location.href = "/maintenance";
+      const locale = getLocale();
+      window.location.href = `/${locale}/maintenance`;
     }
 
     return Promise.reject(error);
   }
 );
+
+// Helper function to handle authentication redirects with locale
+function handleAuthRedirect() {
+  const locale = getLocale();
+  const returnUrl = encodeURIComponent(window.location.pathname);
+  window.location.href = `/${locale}${authConfig.loginRedirectPath}?returnUrl=${returnUrl}`;
+}
+
+// Helper to get the current locale from URL or default to 'en'
+function getLocale(): string {
+  if (typeof window !== "undefined") {
+    const pathParts = window.location.pathname.split("/");
+    // The locale should be the first part after the leading slash
+    if (pathParts.length > 1) {
+      return pathParts[1] || "en";
+    }
+  }
+  return "en";
+}
 
 export default api;

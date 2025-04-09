@@ -8,14 +8,6 @@ export interface CitizenLoginRequest {
   password: string;
 }
 
-export interface CitizenAuthResponse {
-  accessToken: string;
-  refreshToken: string;
-  tokenType: string;
-  expiresIn: number;
-  citizenId: string;
-}
-
 export interface CitizenRequestPasswordResetRequest {
   email: string;
 }
@@ -39,4 +31,13 @@ export interface ApiResponse<T> {
   data: T;
   timestamp?: string;
   errors?: Record<string, string[]>;
+}
+
+export interface CitizenAuthResponse {
+  token: string;
+  refreshToken: string;
+  citizenId: string;
+  email: string;
+  expiresIn: number;
+  state: string;
 }

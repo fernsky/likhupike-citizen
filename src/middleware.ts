@@ -18,15 +18,41 @@ const intlMiddleware = createMiddleware({
 
 // Custom middleware that combines i18n functionality with authentication and security headers
 export default function middleware(request: NextRequest) {
-  // Process internationalization first
+  // Check if the request is for a static file or Next.js resource
+  const { pathname } = request.nextUrl;
+  const isStaticResource = [
+    // Next.js static files and API routes
+    "/_next/",
+    "/api/",
+    // Common static file extensions
+    ".css",
+    ".js",
+    ".json",
+    ".ico",
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".svg",
+    ".webp",
+    ".woff",
+    ".woff2",
+    ".ttf",
+  ].some((path) => pathname.includes(path));
+
+  // Skip middleware for static resources
+  if (isStaticResource) {
+    return NextResponse.next();
+  }
+
+  // Process internationalization
   const response = intlMiddleware(request);
 
   // Extract path from request
   const path = request.nextUrl.pathname;
 
-  // Check if the path is a protected route (more flexible than hardcoding "/dashboard")
-  const isProtectedRoute = protectedPaths.some(protectedPath => {
-    if (protectedPath.endsWith('/*')) {
+  // Check if the path is a protected route
+  const isProtectedRoute = protectedPaths.some((protectedPath) => {
+    if (protectedPath.endsWith("/*")) {
       const basePath = protectedPath.slice(0, -2);
       return path.startsWith(basePath);
     }
@@ -36,9 +62,9 @@ export default function middleware(request: NextRequest) {
   if (isProtectedRoute) {
     // Get auth token and check if it's valid
     const token = request.cookies.get("auth_token")?.value;
-
-    // If no token or token is invalid, redirect to login
-    if (!token || !isTokenValid(token)) {
+    console.log(request.cookies);
+    // If no token or token is "undefined" string or invalid, redirect to login
+    if (!token || token === "undefined" || !isTokenValid(token)) {
       // Get locale from path
       const locale = path.split("/")[1] || "en";
 
@@ -85,14 +111,21 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Match all routes except API routes, static files, etc.
+  // Update matcher configuration to properly exclude static resources
   matcher: [
-    // Match all paths except those starting with /api/, /_next/, or containing a dot (.)
-    "/((?!api|_next|_vercel|.*\\..*).*)",
-    // Include all protected routes
-    ...protectedPaths.map(path => 
-      path.endsWith('/*') 
-        ? `/:locale${path.slice(0, -2)}/:path*` 
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - public folder files (public assets)
+     * Also exclude API routes
+     */
+    "/((?!_next/static|_next/image|favicon.ico|.*\\..*|api).*)",
+    // Include only the protected routes that need auth checking
+    ...protectedPaths.map((path) =>
+      path.endsWith("/*")
+        ? `/:locale${path.slice(0, -2)}/:path*`
         : `/:locale${path}`
     ),
   ],

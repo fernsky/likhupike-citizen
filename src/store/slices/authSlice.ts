@@ -36,7 +36,7 @@ const authSlice = createSlice({
     },
     loginSuccess(state, action: PayloadAction<CitizenAuthResponse>) {
       state.isAuthenticated = true;
-      state.token = action.payload.accessToken;
+      state.token = action.payload.token;
       state.refreshToken = action.payload.refreshToken;
       state.citizenId = action.payload.citizenId;
       state.expiresAt = Date.now() + action.payload.expiresIn * 1000;
@@ -45,7 +45,7 @@ const authSlice = createSlice({
 
       // Store in localStorage and cookies using our utility
       if (isClient) {
-        setAuthToken(action.payload.accessToken, action.payload.expiresIn);
+        setAuthToken(action.payload.token, action.payload.expiresIn);
         localStorage.setItem("refresh_token", action.payload.refreshToken);
         localStorage.setItem("user_id", action.payload.citizenId);
         localStorage.setItem(
@@ -59,13 +59,13 @@ const authSlice = createSlice({
       state.error = action.payload;
     },
     refreshTokenSuccess(state, action: PayloadAction<CitizenAuthResponse>) {
-      state.token = action.payload.accessToken;
+      state.token = action.payload.token;
       state.refreshToken = action.payload.refreshToken;
       state.expiresAt = Date.now() + action.payload.expiresIn * 1000;
 
       // Update localStorage and cookies
       if (isClient) {
-        setAuthToken(action.payload.accessToken, action.payload.expiresIn);
+        setAuthToken(action.payload.token, action.payload.expiresIn);
         localStorage.setItem("refresh_token", action.payload.refreshToken);
         localStorage.setItem(
           "token_expiry",
