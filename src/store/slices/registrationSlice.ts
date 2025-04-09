@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RegisterCitizenRequest, ApiErrorResponse } from "@/domains/citizen/types";
+import { RegisterCitizenRequest } from "@/domains/citizen/types";
 import { RootState } from "@/store";
 import { format } from "date-fns";
 import { citizenApi } from "../services/citizenApi";
@@ -132,7 +132,10 @@ export const registrationSlice = createSlice({
           state.isSubmitting = false;
 
           // Extract error message from API response if available
-          const errorData = extractApiErrorMessage(action.payload, action.error);
+          const errorData = extractApiErrorMessage(
+            action.payload,
+            action.error
+          );
           state.error = errorData;
         }
       );
@@ -148,6 +151,7 @@ function extractApiErrorMessage(
   if (payload) {
     const errorPayload = payload as { data?: unknown };
     if (errorPayload.data) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const data = errorPayload.data as any;
       if (data.error && data.error.message) {
         return data.error.message; // Return the API error message key
@@ -156,17 +160,22 @@ function extractApiErrorMessage(
   }
 
   // Case 2: Connection error (could not reach server)
-  if (error && 'status' in error && error.status === 'FETCH_ERROR') {
-    return 'errors.connectionFailed';
+  if (error && "status" in error && error.status === "FETCH_ERROR") {
+    return "errors.connectionFailed";
   }
 
   // Case 3: Server error (5xx)
-  if (error && 'status' in error && typeof error.status === 'number' && error.status >= 500) {
-    return 'errors.serverError';
+  if (
+    error &&
+    "status" in error &&
+    typeof error.status === "number" &&
+    error.status >= 500
+  ) {
+    return "errors.serverError";
   }
 
   // Case 4: Default fallback
-  return 'errors.registrationFailed';
+  return "errors.registrationFailed";
 }
 
 // Export actions
