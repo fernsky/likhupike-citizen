@@ -6,7 +6,7 @@ import { CheckCircle, AlertCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 export function DashboardAlert() {
-  const t = useTranslations();
+  const t = useTranslations("dashboard");
   const { data: profile, isLoading } = useGetMyProfileQuery();
 
   if (isLoading || !profile) {
