@@ -5,8 +5,10 @@ import { registrationReducer } from "./slices/registrationSlice";
 import { authReducer } from './slices/authSlice';
 import { profileReducer } from './slices/profileSlice';
 import { uiReducer } from './slices/uiSlice';
+import { municipalityReducer } from './slices/municipalitySlice';
 import { citizenApi } from './services/citizenApi';
 import { authApi } from './services/authApi';
+import { locationApi } from './services/locationApi';
 
 export const store = configureStore({
   reducer: {
@@ -14,13 +16,16 @@ export const store = configureStore({
     profile: profileReducer,
     ui: uiReducer,
     registration: registrationReducer,
+    municipality: municipalityReducer,
     [citizenApi.reducerPath]: citizenApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
+    [locationApi.reducerPath]: locationApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       citizenApi.middleware,
       authApi.middleware,
+      locationApi.middleware,
     ),
   devTools: process.env.NODE_ENV !== 'production',
 });
