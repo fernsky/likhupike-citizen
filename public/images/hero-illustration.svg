@@ -1,0 +1,47 @@
+<svg width="600" height="400" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Subtle background -->
+  <rect width="600" height="400" fill="#FAFBFF" opacity="0.4" />
+  
+  <!-- Abstract geometric elements -->
+  <!-- Thin lines -->
+  <line x1="100" y1="50" x2="500" y2="350" stroke="#E2E8F0" stroke-width="0.7" />
+  <line x1="500" y1="50" x2="100" y2="350" stroke="#E2E8F0" stroke-width="0.7" />
+  <line x1="50" y1="200" x2="550" y2="200" stroke="#E2E8F0" stroke-width="0.7" />
+  <line x1="300" y1="50" x2="300" y2="350" stroke="#E2E8F0" stroke-width="0.7" />
+  
+  <!-- Circles -->
+  <circle cx="300" cy="200" r="100" stroke="#BFDBFE" stroke-width="0.8" fill="none" />
+  <circle cx="300" cy="200" r="150" stroke="#BFDBFE" stroke-width="0.6" fill="none" />
+  <circle cx="300" cy="200" r="50" stroke="#BFDBFE" stroke-width="1" fill="none" />
+  
+  <!-- Translucent shapes -->
+  <rect x="150" y="100" width="300" height="200" rx="4" fill="#EFF6FF" opacity="0.4" />
+  <circle cx="150" cy="100" r="40" fill="#DBEAFE" opacity="0.3" />
+  <circle cx="450" cy="300" r="40" fill="#DBEAFE" opacity="0.3" />
+  
+  <!-- Triangle shapes -->
+  <polygon points="300,100 200,250 400,250" fill="none" stroke="#93C5FD" stroke-width="0.8" opacity="0.6" />
+  <polygon points="300,300 200,150 400,150" fill="none" stroke="#93C5FD" stroke-width="0.8" opacity="0.6" />
+  
+  <!-- Dashed curves -->
+  <path d="M100,150 Q300,50 500,150" stroke="#CBD5E1" stroke-width="0.8" stroke-dasharray="3,3" fill="none" />
+  <path d="M100,250 Q300,350 500,250" stroke="#CBD5E1" stroke-width="0.8" stroke-dasharray="3,3" fill="none" />
+  
+  <!-- Complementary shapes -->
+  <rect x="250" y="150" width="100" height="100" fill="none" stroke="#94A3B8" stroke-width="0.8" opacity="0.7" />
+  <circle cx="300" cy="200" r="75" stroke="#94A3B8" stroke-width="0.5" fill="none" opacity="0.7" />
+  
+  <!-- Grid dots -->
+  <circle cx="100" cy="100" r="2" fill="#CBD5E1" opacity="0.7" />
+  <circle cx="200" cy="100" r="2" fill="#CBD5E1" opacity="0.7" />
+  <circle cx="400" cy="100" r="2" fill="#CBD5E1" opacity="0.7" />
+  <circle cx="500" cy="100" r="2" fill="#CBD5E1" opacity="0.7" />
+  <circle cx="100" cy="300" r="2" fill="#CBD5E1" opacity="0.7" />
+  <circle cx="200" cy="300" r="2" fill="#CBD5E1" opacity="0.7" />
+  <circle cx="400" cy="300" r="2" fill="#CBD5E1" opacity="0.7" />
+  <circle cx="500" cy="300" r="2" fill="#CBD5E1" opacity="0.7" />
+  
+  <!-- Subtle accent elements -->
+  <path d="M250,100 L350,100 L350,200 L250,200 Z" stroke="#BFDBFE" stroke-width="0.5" fill="none" opacity="0.8" />
+  <path d="M250,200 L350,200 L350,300 L250,300 Z" stroke="#BFDBFE" stroke-width="0.5" fill="none" opacity="0.8" />
+</svg>
