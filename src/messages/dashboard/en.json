@@ -4,6 +4,7 @@
   "completeProfile": "Complete Your Profile",
 
   "header": {
+    "welcome": "Welcome to Your Dashboard",
     "completeProfile": "Complete Your Profile",
     "welcomeMessage": "Track your profile verification and manage your documents here"
   },
